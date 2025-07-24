@@ -813,7 +813,7 @@ javac -cp "bin;lib/*" -d bin src/test/ca/ucalgary/edu/ensf380/controller/Station
 
 ```
 Real-Time Systems    ████████████████████ 100%
-UI/UX Design         ████████████████████ 100%  
+  UI/UX Design         ████████████████████ 100%  
 API Integration      ████████████████████ 100%
 Database Operations  ████████████████████ 100%
 Error Handling       ████████████████████ 100%
