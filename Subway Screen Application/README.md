@@ -165,11 +165,11 @@ java -cp "bin;lib/*" ca.ucalgary.edu.ensf380.view.SubwayScreenApp 7 Tokyo JP
 <div align="center">
 
 ### 🚇 Main Display - Train Tracking View
-![Main Display](miscellaneous/main_display_screenshot.png)
+![Main Display](miscellaneous/image_01.png)
 *Real-time train positions with smooth animations, live weather, and scrolling news*
 
 ### 📺 Advertisement Display
-![Advertisement View](miscellaneous/advertisement_display_screenshot.png)  
+![Advertisement View](miscellaneous/image_02.png)  
 *Dynamic advertisement rotation with professional transitions and modern UI*
 
 </div>
