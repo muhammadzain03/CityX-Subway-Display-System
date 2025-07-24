@@ -1,0 +1,16 @@
+# Eclipse IDE files
+.classpath
+.project
+.settings/
+
+# Build output directories
+bin/
+out/
+
+# Logs directory created by AppLogger
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
