@@ -917,7 +917,7 @@ of this software and associated documentation files...
 
 ### 🚇 **Ready to Explore the Future of Transit Displays?**
 
-**[⭐ Star this Repository](https://github.com/muhammadzain03/CityX-Subway-Display-System)** • **[📧 Contact Developer](mailto:muhammadzain03@gmail.com)** • **[💼 View More Projects](https://github.com/muhammadzain03)**
+**[⭐ Star this Repository](https://github.com/muhammadzain03/CityX-Subway-Display-System)** • **[📧 Contact Developer](mailto:muhammadzain0476@gmail.com)** • **[💼 View More Projects](https://github.com/muhammadzain03)**
 
 ---
 
