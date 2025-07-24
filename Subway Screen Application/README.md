@@ -3,8 +3,6 @@
 
 <div align="center">
 
-![Subway Display Banner](miscellaneous/subway_display_banner.png)
-
 **A sophisticated real-time subway information display system built with Java, featuring live train tracking, weather updates, news feeds, and dynamic advertisements.**
 
 [![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://www.oracle.com/java/)
@@ -54,9 +52,10 @@ The **CityX Subway Display System** is a comprehensive real-time information dis
 ### 📈 Key Metrics
 
 - **🏃‍♂️ Startup Time**: Under 2 seconds
-- **📊 Data Points**: 120+ subway stations, 12 active trains
-- **🌐 API Integration**: Weather and news from multiple sources
-- **💾 Database**: MySQL with optimized queries and connection pooling
+- **📊 Data Points**: 120+ subway stations across 3 lines (Red, Blue, Green)
+- **🚆 Train System**: Configurable trains (1-12) with real-time positioning
+- **🌐 API Integration**: Weather and news from multiple international sources
+- **💾 Database**: MySQL with advertisement management and data persistence
 - **📱 Responsive Design**: Scales beautifully across different screen sizes
 
 ---
@@ -70,7 +69,7 @@ The **CityX Subway Display System** is a comprehensive real-time information dis
 ### 🚆 **Real-Time Train Tracking**
 - **Smooth animated trains** with live position updates
 - **Interactive station map** with hover effects and click events
-- **12 simultaneous trains** across 3 color-coded subway lines
+- **Configurable train system** (trains numbered 1-12) across 3 color-coded subway lines
 - **Direction indicators** and train numbering system
 - **Pulsing animations** and visual feedback
 
@@ -128,17 +127,18 @@ The **CityX Subway Display System** is a comprehensive real-time information dis
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/yourusername/subway-screen-application.git
-cd subway-screen-application
+git clone https://github.com/muhammadzain03/CityX-Subway-Display-System.git
+cd CityX-Subway-Display-System
 
-# 2. One-click build and run
-run.bat
+# 2. Build and run (Two steps)
+build.bat    # First compile the application
+run.bat      # Then launch the subway display system
 ```
 
 **That's it!** 🎉 The application will:
-- ✅ Compile automatically if needed
+- ✅ Compile all Java files with proper dependencies (`build.bat`)
 - ✅ Start the subway simulator in the background  
-- ✅ Launch with beautiful Calgary configuration
+- ✅ Launch with beautiful Calgary configuration (default)
 - ✅ Display professional content immediately
 
 ### 🌍 Custom City Configuration
@@ -150,13 +150,17 @@ run.bat  # Shows city selection dialog
 
 **Command Line** (Advanced):
 ```bash
+# Format: java -cp "bin;lib/*" ca.ucalgary.edu.ensf380.view.SubwayScreenApp [train_number] [city_name] [country_code]
 # Examples for different world cities
 java -cp "bin;lib/*" ca.ucalgary.edu.ensf380.view.SubwayScreenApp 5 "New York" US
 java -cp "bin;lib/*" ca.ucalgary.edu.ensf380.view.SubwayScreenApp 3 London UK  
 java -cp "bin;lib/*" ca.ucalgary.edu.ensf380.view.SubwayScreenApp 7 Tokyo JP
 ```
 
-**Choose from 20+ major cities**: Calgary, Toronto, New York, London, Paris, Tokyo, Sydney, Mumbai, Dubai, and more!
+**Parameters Explained**:
+- **Train Number**: 1-12 (determines initial train configuration)
+- **City Name**: Any major city for weather data (Calgary, Toronto, New York, London, Paris, Tokyo, Sydney, Mumbai, Dubai, etc.)
+- **Country Code**: Two-letter country code (US, UK, JP, CA, FR, AU, etc.)
 
 ---
 
@@ -222,7 +226,8 @@ graph TB
 
 ### 🎯 **Model-View-Controller (MVC) Pattern**
 
-**🎨 View Layer** (`view/`):
+**🎨 View Layer** (`src/ca/ucalgary/edu/ensf380/view/`):
+- `SubwayScreenApp`: Main application entry point and city configuration
 - `SubwayScreenGUI`: Main window orchestration and layout management
 - `MapPanel`: Interactive subway map with real-time train visualization
 - `WeatherPanel`: Live weather display with modern card design
@@ -230,21 +235,20 @@ graph TB
 - `StationInfoPanel`: Train position and station information cards
 - `AdvertisementPanel`: Dynamic ad rotation with transition effects
 
-**🧠 Controller Layer** (`controller/`):
+**🧠 Controller Layer** (`src/ca/ucalgary/edu/ensf380/controller/`):
 - `StationController`: Manages 120+ station data and train position updates
 - `WeatherController`: Fetches live weather with retry logic and caching
 - `NewsController`: Integrates news APIs with intelligent fallback content
 - `AdvertisementController`: Database-driven ad management and rotation
+- `DataFetcherController`: Coordinates data retrieval operations
 - `ReadSimulatorOutput`: Parses real-time train data from external simulator
 
-**📊 Model Layer** (`model/`):
+**📊 Model Layer** (`src/ca/ucalgary/edu/ensf380/model/`):
 - `Station`: Station data model with coordinates and metadata
 - `Train`: Real-time train state including position and direction
 - `SubwayLine`: Line configuration and station relationships
 
-**🔧 Utility Layer** (`util/`):
-- `AppLogger`: Centralized logging with levels and file output
-- `AppConstants`: 170+ configuration constants for maintainability
+**🔧 Utility Layer** (`src/ca/ucalgary/edu/ensf380/util/`):
 - `DatabaseUtil`: MySQL connection management and query execution
 
 ### 🚀 **Key Design Principles**
@@ -320,23 +324,27 @@ javac -cp "lib/*" -d bin src/ca/ucalgary/edu/ensf380/**/*.java
 ### 🗂️ **Project Structure**
 
 ```
-📁 Subway Screen Application/
-├── 📁 src/ca/ucalgary/edu/ensf380/
-│   ├── 📁 view/          # UI components and main application
-│   ├── 📁 controller/    # Business logic and data management  
-│   ├── 📁 model/         # Data models and entities
-│   └── 📁 util/          # Utilities, logging, and constants
-├── 📁 lib/               # External JAR dependencies
-├── 📁 data/              # Station data and configuration files
-├── 📁 Map/               # Subway line maps and train data
-├── 📁 advertisements/    # Advertisement images (GIF, JPEG, BMP)
-├── 📁 audio/             # MP3 station announcements (120+ files)
-├── 📁 database/          # SQL scripts and database setup
-├── 📁 exe/               # SubwaySimulator.jar and documentation
-├── 📁 miscellaneous/     # Additional documentation and assets
-├── 📁 bin/               # Compiled Java classes (auto-generated)
-├── 📁 out/               # Simulator output files (auto-generated)
-└── 📁 logs/              # Application logs (auto-generated)
+📁 CityX-Subway-Display-System/
+├── 📁 Subway Screen Application/
+│   ├── 📁 src/ca/ucalgary/edu/ensf380/
+│   │   ├── 📁 view/          # UI components and main application
+│   │   ├── 📁 controller/    # Business logic and data management  
+│   │   ├── 📁 model/         # Data models and entities
+│   │   ├── 📁 util/          # Database utilities
+│   │   └── MyApp3.java       # Additional application file
+│   ├── 📁 lib/               # External JAR dependencies (FlatLaf, JLayer, JSON, MySQL)
+│   ├── 📁 data/              # Station data and configuration files
+│   ├── 📁 Map/               # Subway line maps and train data (CSV, PNG files)
+│   ├── 📁 advertisements/    # Advertisement images (5 GIF files)
+│   ├── 📁 audio/             # MP3 station announcements (120+ files: B01-B44, G01-G33, R01-R43)
+│   ├── 📁 database/          # SQL scripts and database setup
+│   ├── 📁 exe/               # SubwaySimulator.jar and documentation
+│   ├── 📁 resources/         # Additional resources (map.png)
+│   ├── 📁 bin/               # Compiled Java classes (auto-generated)
+│   ├── build.bat             # Build script
+│   └── run.bat               # Run script
+├── 📁 miscellaneous/         # Project documentation and images
+└── README.md                 # This comprehensive documentation
 ```
 
 ### 🎛️ **Configuration**
@@ -515,12 +523,29 @@ stations.sort((a, b) -> {
 - **Code Quality**: Higher consistency and adherence to best practices
 - **Learning**: Exposure to advanced techniques and patterns
 
+### 📝 **Phase 5: Documentation & Professional Presentation (AI-Generated)**
+
+**Challenge**: Creating comprehensive, professional documentation that showcases the project effectively on GitHub.
+
+**AI Contribution**:
+- ✅ **Complete README Creation**: This entire 900+ line professional README was generated using Cursor AI
+- ✅ **Technical Documentation**: Detailed architecture explanations, setup guides, and feature descriptions
+- ✅ **Visual Design**: Professional markdown formatting with emojis, tables, and structured layouts
+- ✅ **Portfolio Optimization**: GitHub-ready documentation that highlights technical skills and AI collaboration
+
+**Transformation Achievement**:
+> *"I provided Cursor AI with my project details and images, requesting a 'world-class README file.' The AI generated this comprehensive documentation that not only explains every technical aspect but also tells the complete story of AI-assisted development - including creating this very documentation!"*
+
+**Meta-Documentation Moment**: 
+This README itself demonstrates the power of AI in technical writing - from basic project requirements to professional, portfolio-ready documentation that effectively communicates complex technical concepts and development methodologies.
+
 ### 🤝 **Human + AI Collaboration Model**
 
 1. **🧠 Human Vision**: Define project goals, user experience, and creative direction
 2. **🤖 AI Implementation**: Rapid prototyping, code generation, and technical optimization
 3. **👨‍💻 Human Refinement**: Testing, customization, and quality validation
 4. **🔄 Iterative Improvement**: Continuous collaboration for enhanced features
+5. **📚 AI Documentation**: Professional documentation and presentation creation
 
 ---
 
@@ -680,15 +705,16 @@ AppLogger.performance("UI rendering", renderTime);
 
 ### 📈 **Codebase Metrics**
 
-| Component | Lines of Code | Files | Description |
-|-----------|---------------|-------|-------------|
-| **View Layer** | 2,847 | 7 | UI components and rendering |
-| **Controller Layer** | 1,923 | 6 | Business logic and data management |
-| **Model Layer** | 312 | 3 | Data models and entities |
-| **Utilities** | 687 | 3 | Logging, constants, and database utils |
-| **Configuration** | 245 | 4 | Build scripts and project setup |
-| **Documentation** | 892 | 3 | README, guides, and comments |
-| **Total** | **6,906** | **26** | Complete application |
+| Component | Files | Description |
+|-----------|-------|-------------|
+| **View Layer** | 7 | UI components and rendering (SubwayScreenApp, SubwayScreenGUI, MapPanel, etc.) |
+| **Controller Layer** | 6 | Business logic and data management (StationController, WeatherController, etc.) |
+| **Model Layer** | 3 | Data models and entities (Station, Train, SubwayLine) |
+| **Utilities** | 1 | Database utilities (DatabaseUtil) |
+| **Configuration** | 2 | Build and run scripts (build.bat, run.bat) |
+| **Assets** | 120+ | Audio files (MP3), images (GIF), maps (PNG/CSV), advertisements |
+| **Documentation** | 3+ | README, javadoc, project guides |
+| **Total** | **140+** | Complete subway display system |
 
 ### 🎯 **Feature Implementation**
 
@@ -891,7 +917,7 @@ of this software and associated documentation files...
 
 ### 🚇 **Ready to Explore the Future of Transit Displays?**
 
-**[⭐ Star this Repository](https://github.com/yourusername/subway-screen-application)** • **[📧 Contact Developer](mailto:your.email@example.com)** • **[💼 View Portfolio](https://your-portfolio-site.com)**
+**[⭐ Star this Repository](https://github.com/muhammadzain03/CityX-Subway-Display-System)** • **[📧 Contact Developer](mailto:muhammadzain03@gmail.com)** • **[💼 View More Projects](https://github.com/muhammadzain03)**
 
 ---
 
