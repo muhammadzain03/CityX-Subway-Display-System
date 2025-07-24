@@ -1,1 +1,0 @@
-memberSearchIndex = [{"p":"ca.ucalgary.edu.ensf380.controller","c":"WeatherController","l":"retrieveWeather(String)","u":"retrieveWeather(java.lang.String)"},{"p":"ca.ucalgary.edu.ensf380.controller","c":"WeatherController","l":"WeatherController(WeatherPanel)","u":"%3Cinit%3E(ca.ucalgary.edu.ensf380.view.WeatherPanel)"}];updateSearchResults();
