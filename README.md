@@ -720,7 +720,7 @@ AppLogger.performance("UI rendering", renderTime);
 
 ```
 Real-Time Systems    ████████████████████ 100%
- UI/UX Design         ████████████████████ 100%  
+  UI/UX Design         ████████████████████ 100%  
 API Integration      ████████████████████ 100%
 Database Operations  ████████████████████ 100%
 Error Handling       ████████████████████ 100%
