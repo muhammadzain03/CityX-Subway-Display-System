@@ -14,9 +14,7 @@ public class DatabaseUtil {
     private Connection dbConnect;
     private ResultSet results;
 
-    public DatabaseUtil() {
-        // Default constructor
-    }
+    public DatabaseUtil() {}
 
     /**
      * Creates a connection to the database with improved error handling and logging.

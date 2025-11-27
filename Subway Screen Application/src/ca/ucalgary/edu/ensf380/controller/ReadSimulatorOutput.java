@@ -62,7 +62,7 @@ public class ReadSimulatorOutput {
 
         // Check if there are any files
         if (latest == null) {
-            AppLogger.warning("No simulator output files found in: " + AppConstants.OUTPUT_PATH);
+            AppLogger.debug("No simulator output files found yet in: " + AppConstants.OUTPUT_PATH + " (simulator may still be starting)");
             return;
         }
 
@@ -96,6 +96,19 @@ public class ReadSimulatorOutput {
                 }
             }
             
+            // Sort trains by ID to maintain consistent order across updates
+            // This prevents trains from "jumping" on the map when CSV order changes
+            trains.sort((t1, t2) -> {
+                try {
+                    int id1 = Integer.parseInt(t1.getId());
+                    int id2 = Integer.parseInt(t2.getId());
+                    return Integer.compare(id1, id2);
+                } catch (NumberFormatException e) {
+                    // Fallback to string comparison if IDs aren't numeric
+                    return t1.getId().compareTo(t2.getId());
+                }
+            });
+            
             long duration = System.currentTimeMillis() - startTime;
             AppLogger.data("Simulator Output", String.format("Loaded %d trains from %s in %d ms", 
                 trainCount, latest.getName(), duration));
@@ -107,6 +120,9 @@ public class ReadSimulatorOutput {
     
     /**
      * Retrieves the latest file based on the last modified date.
+     * 
+     * Fixed to avoid "Comparison method violates its general contract" error
+     * by filtering CSV files first and using a stable comparison.
      *
      * @param files an array of File objects
      * @return the latest modified File object or null if no files are present
@@ -116,19 +132,30 @@ public class ReadSimulatorOutput {
             return null;
         }
 
-        // Sort by last modified time in descending order
-        Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
+        // Filter for CSV files first, then find the latest
+        File latestFile = null;
+        long latestTimestamp = 0;
         
-        // Find the first valid CSV file
         for (File file : files) {
+            // Only consider valid CSV files
             if (file.isFile() && file.getName().toLowerCase().endsWith(".csv")) {
-                AppLogger.debug("Latest simulation file found: " + file.getName());
-                return file;
+                long fileTimestamp = file.lastModified();
+                
+                // Keep track of the file with the latest timestamp
+                if (latestFile == null || fileTimestamp > latestTimestamp) {
+                    latestFile = file;
+                    latestTimestamp = fileTimestamp;
+                }
             }
         }
         
-        AppLogger.warning("No valid CSV files found in simulator output directory");
-        return null;
+        if (latestFile != null) {
+            AppLogger.debug("Latest simulation file found: " + latestFile.getName());
+        } else {
+            AppLogger.warning("No valid CSV files found in simulator output directory");
+        }
+        
+        return latestFile;
     }
     
     /**

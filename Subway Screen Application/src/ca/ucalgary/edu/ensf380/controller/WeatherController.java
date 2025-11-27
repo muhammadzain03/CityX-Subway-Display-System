@@ -223,11 +223,30 @@ public class WeatherController extends DataFetcherController {
      * Update weather display with error information
      */
     private void updateWeatherWithError(String city, String errorMessage) {
+        // Provide more helpful error message
+        String simplifiedError = simplifyErrorMessage(errorMessage);
         String errorInfo = String.format(
-            "<html>Location: %s<br>Status: %s<br>Last Update: Never<br>Error: %s</html>",
-            city, "Service Unavailable", errorMessage != null ? errorMessage : "Unknown error"
+            "<html>Location: %s<br>Status: %s<br>Last Update: Never<br><br>%s<br><br><i>Note: Weather service may be<br>blocked by firewall or slow.<br>App continues running normally.</i></html>",
+            city, "Service Unavailable", simplifiedError
         );
         weatherPanel.updateWeatherLabel(errorInfo);
+    }
+    
+    /**
+     * Simplify technical error messages for users
+     */
+    private String simplifyErrorMessage(String error) {
+        if (error == null) return "Connection failed";
+        
+        if (error.contains("timed out") || error.contains("timeout")) {
+            return "Connection timeout<br>(Weather service too slow)";
+        } else if (error.contains("UnknownHost") || error.contains("cannot resolve")) {
+            return "Cannot reach weather service";
+        } else if (error.contains("Connection refused")) {
+            return "Weather service unavailable";
+        } else {
+            return "Network error: " + error.substring(0, Math.min(50, error.length()));
+        }
     }
     
     /**

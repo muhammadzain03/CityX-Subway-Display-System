@@ -37,13 +37,37 @@ if not exist "bin\ca\ucalgary\edu\ensf380\view\SubwayScreenApp.class" (
 )
 
 echo Starting Subway Screen Application...
-echo (Using default configuration: Train 1, Calgary, CA)
+echo.
+echo ========================================
+echo    Application Configuration
+echo ========================================
 echo.
 
-REM Run the application - arguments are now OPTIONAL!
-REM Default: Train 1, Calgary, CA
-REM Custom usage: java -cp "bin;lib/*" ca.ucalgary.edu.ensf380.view.SubwayScreenApp [train] [city] [country]
-java -cp "bin;lib/*" ca.ucalgary.edu.ensf380.view.SubwayScreenApp
+REM Prompt for Train Number
+set /p TRAIN_NUM="Enter Train Number (1-12) [Default: 1]: "
+if "%TRAIN_NUM%"=="" set TRAIN_NUM=1
+
+REM Prompt for City
+set /p CITY="Enter City Name [Default: Calgary]: "
+if "%CITY%"=="" set CITY=Calgary
+
+REM Prompt for Country Code
+set /p COUNTRY="Enter Country Code (e.g., CA, US, UK) [Default: CA]: "
+if "%COUNTRY%"=="" set COUNTRY=CA
+
+echo.
+echo ========================================
+echo Configuration Summary:
+echo   Train Number: %TRAIN_NUM%
+echo   City: %CITY%
+echo   Country: %COUNTRY%
+echo ========================================
+echo.
+echo Starting application...
+echo.
+
+REM Run the application with user inputs
+java -cp "bin;lib/*" ca.ucalgary.edu.ensf380.view.SubwayScreenApp %TRAIN_NUM% %CITY% %COUNTRY%
 
 REM Check if the application ran successfully
 if %ERRORLEVEL% EQU 0 (

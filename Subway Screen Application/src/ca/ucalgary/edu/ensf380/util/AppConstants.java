@@ -26,15 +26,11 @@ public final class AppConstants {
     public static final String AUDIO_PATH = "audio/";
     public static final String DATA_PATH = "data/";
     public static final String OUTPUT_PATH = "out/";
-    public static final String MAP_PATH = "Map/";
-    public static final String RESOURCES_PATH = "resources/";
     public static final String EXECUTABLE_PATH = "exe/";
     
     // Specific file paths
     public static final String SUBWAY_DATA_FILE = DATA_PATH + "subway.csv";
-    public static final String MAP_DATA_FILE = MAP_PATH + "Map.csv";
     public static final String SIMULATOR_JAR = EXECUTABLE_PATH + "SubwaySimulator.jar";
-    public static final String MAP_IMAGE = RESOURCES_PATH + "map.png";
     
     // ========== UI DIMENSIONS ==========
     public static final int MAIN_WINDOW_WIDTH = 1200;
@@ -127,7 +123,8 @@ public final class AppConstants {
     public static final int GRID_SIZE = 50;                     // Background grid size
     public static final int STATION_SIZE_SMALL = 10;            // Regular station size (reduced from 12)
     public static final int STATION_SIZE_LARGE = 14;            // Transfer/terminal station size (reduced from 16)
-    public static final int TRAIN_SIZE = 14;                    // Train indicator size (reduced from 16)
+    public static final int TRAIN_SIZE = 16;                    // Train indicator size
+    public static final int TRAIN_SIZE_SELECTED = 20;           // Selected train indicator size (larger)
     public static final int TOOLTIP_PADDING = 15;               // Tooltip padding
     public static final int SHADOW_OFFSET = 2;                  // Standard shadow offset
     
@@ -145,11 +142,11 @@ public final class AppConstants {
     public static final int CARD_RADIUS = 15;
     
     // ========== NETWORK TIMEOUTS ==========
-    public static final int HTTP_CONNECT_TIMEOUT = 5000;        // 5 seconds
-    public static final int HTTP_READ_TIMEOUT = 10000;          // 10 seconds
+    public static final int HTTP_CONNECT_TIMEOUT = 15000;       // 15 seconds (increased for slow networks)
+    public static final int HTTP_READ_TIMEOUT = 20000;          // 20 seconds
     public static final int NEWS_API_TIMEOUT = 15000;           // 15 seconds for news API (longer)
-    public static final int API_RETRY_ATTEMPTS = 2;             // Number of retry attempts
-    public static final int API_RETRY_DELAY = 2000;             // Delay between retries (increased)
+    public static final int API_RETRY_ATTEMPTS = 3;             // Number of retry attempts (increased)
+    public static final int API_RETRY_DELAY = 3000;             // Delay between retries (3 seconds)
     
     // ========== DATABASE SETTINGS ==========
     public static final String DB_URL = "jdbc:mysql://localhost:3306/subway_screen";
@@ -157,7 +154,6 @@ public final class AppConstants {
     // NOTE: In production, credentials should be stored in environment variables or secure vault
     public static final String DB_PASSWORD = "Qwerty$455";
     public static final int DB_CONNECTION_TIMEOUT = 5000;       // 5 seconds
-    public static final int DB_MAX_CONNECTIONS = 3;             // Connection pool size (optional optimization)
     
     // ========== API ENDPOINTS ==========
     public static final String WEATHER_API_BASE = "https://wttr.in/";
@@ -198,5 +194,4 @@ public final class AppConstants {
     // ========== DEVELOPMENT FLAGS ==========
     public static final boolean DEBUG_MODE = false;             // Enable debug logging
     public static final boolean PERFORMANCE_MONITORING = false; // Enable performance metrics
-    public static final boolean MOCK_SIMULATOR = false;         // Use mock data instead of simulator
 } 

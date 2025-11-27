@@ -31,22 +31,22 @@ public class StationController {
     }
 
     /**
-     * Populates the station list from the Map.csv file with improved error handling.
+     * Populates the station list from the subway.csv file with improved error handling.
      */
     private void populateStation() {
-        AppLogger.data("Station Loading", "Starting to load station data from " + AppConstants.MAP_DATA_FILE);
+        AppLogger.data("Station Loading", "Starting to load station data from " + AppConstants.SUBWAY_DATA_FILE);
         long startTime = System.currentTimeMillis();
         
-        File file = new File(AppConstants.MAP_DATA_FILE);
+        File file = new File(AppConstants.SUBWAY_DATA_FILE);
         
         // Validate file exists
         if (!file.exists()) {
-            AppLogger.error("Station data file not found: " + AppConstants.MAP_DATA_FILE);
+            AppLogger.error("Station data file not found: " + AppConstants.SUBWAY_DATA_FILE);
             return;
         }
         
         if (!file.canRead()) {
-            AppLogger.error("Cannot read station data file: " + AppConstants.MAP_DATA_FILE);
+            AppLogger.error("Cannot read station data file: " + AppConstants.SUBWAY_DATA_FILE);
             return;
         }
 
@@ -91,7 +91,7 @@ public class StationController {
             AppLogger.info(AppConstants.SUCCESS_DATA_LOADED + " (" + loadedStations + " stations)");
             
         } catch (IOException e) {
-            AppLogger.error("Error reading station data file: " + AppConstants.MAP_DATA_FILE, e);
+            AppLogger.error("Error reading station data file: " + AppConstants.SUBWAY_DATA_FILE, e);
         }
     }
     
@@ -108,7 +108,12 @@ public class StationController {
         
         try {
             // Extract and validate data
-            String stationNumber = values[0].trim();
+            // Column 0: Row number (not used)
+            // Column 1: Line (e.g., "R", "G", "B")
+            // Column 2: StationNumber (e.g., "8" for station 8 on the line) 
+            // Column 3: StationCode (e.g., "R08")
+            // Column 4: StationName
+            String stationNumber = values[2].trim();  // Use Column 2 (StationNumber), not Column 0 (Row)
             String stationCode = values[3].trim();
             String stationName = values[4].trim();
             
@@ -160,7 +165,7 @@ public class StationController {
         // Check for duplicate stations
         for (Station existingStation : stations) {
             if (existingStation.getCode().equals(code)) {
-                AppLogger.warning("Duplicate station code found: " + code + ". Skipping duplicate.");
+                // Silently skip duplicate station codes
                 return;
             }
         }
@@ -237,6 +242,12 @@ public class StationController {
                 AppLogger.debug("Updated GUI with station information");
             } else {
                 AppLogger.warning("GUI or StationInfoPanel is null, cannot update display");
+            }
+            
+            // Update map with latest train positions (reuse already-loaded train data)
+            if (gui != null && gui.getMapPanel() != null) {
+                gui.getMapPanel().updateTrainPositions(trains);
+                AppLogger.debug("Updated map with train positions");
             }
             
         } catch (Exception e) {

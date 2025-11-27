@@ -220,4 +220,13 @@ public class SubwayScreenGUI {
     public StationInfoPanel getStationInfoPanel() {
         return stationInfoPanel;
     }
+    
+    /**
+     * Get the map panel for external updates
+     * 
+     * @return the MapPanel instance
+     */
+    public MapPanel getMapPanel() {
+        return mapPanel;
+    }
 }

@@ -204,7 +204,7 @@ public class WeatherPanel {
         this.timeLabel = new JLabel("00:00:00", SwingConstants.CENTER);
         timeLabel.setVisible(false); // Make invisible - we use custom painting
         
-        this.weatherLabel = new JLabel("Loading weather data...", SwingConstants.LEFT);
+        this.weatherLabel = new JLabel("<html>Location: Calgary<br>Status: Loading...<br>Connecting to weather service</html>", SwingConstants.LEFT);
         weatherLabel.setVisible(false); // Make invisible - we use custom painting
 
         // Initialize time immediately, then start timer for updates
@@ -245,7 +245,7 @@ public class WeatherPanel {
     }
     
     private String currentTime = "00:00:00";
-    private String weatherText = "";
+    private String weatherText = "<html>Location: Calgary<br>Status: Loading...<br>Connecting to weather service</html>";
     
 
 }

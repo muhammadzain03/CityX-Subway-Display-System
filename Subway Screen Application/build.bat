@@ -6,16 +6,21 @@ echo ========================================
 REM Change to the project directory
 cd /d "%~dp0"
 
+REM Clean old compiled files for a fresh build
+echo Cleaning old compiled files...
+if exist "bin" (
+    echo Removing old class files from bin...
+    rmdir /s /q bin 2>nul
+)
+
+REM Create fresh bin directory
+echo Creating bin directory...
+mkdir bin
+
 REM Create out directory if it doesn't exist
 if not exist "out" (
     echo Creating out directory...
     mkdir out
-)
-
-REM Create bin directory if it doesn't exist
-if not exist "bin" (
-    echo Creating bin directory...
-    mkdir bin
 )
 
 echo Compiling Java source files...

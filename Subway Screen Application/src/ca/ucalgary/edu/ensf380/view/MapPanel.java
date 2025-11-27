@@ -23,20 +23,18 @@ import javax.swing.*;
 import ca.ucalgary.edu.ensf380.controller.ReadSimulatorOutput;
 import ca.ucalgary.edu.ensf380.model.Station;
 import ca.ucalgary.edu.ensf380.model.Train;
+import ca.ucalgary.edu.ensf380.util.AppConstants;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.QuadCurve2D;
-import java.awt.geom.Ellipse2D;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import javax.swing.Timer;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.Timer;
 
 public class MapPanel extends JPanel {
     private ArrayList<Station> stations;
@@ -391,22 +389,35 @@ public class MapPanel extends JPanel {
     }
     
     private void drawEnhancedTrain(Graphics2D g2, AnimatedTrain train, int trainIndex) {
-        int trainSize = 16;
+        // Check if this is the selected train (user's tracking train)
+        // Compare with actual train ID from the train data, not array index
+        String actualTrainId = (trainInfo != null && trainIndex < trainInfo.size()) ? 
+            trainInfo.get(trainIndex).getId() : String.valueOf(trainIndex + 1);
+        boolean isSelectedTrain = actualTrainId.equals(trainNum);
+        
+        // Make selected train larger and more prominent
+        int trainSize = isSelectedTrain ? AppConstants.TRAIN_SIZE_SELECTED : AppConstants.TRAIN_SIZE;
         int x = sx(train.x) - trainSize/2;
         int y = sy(train.y) - trainSize/2;
         
-        // Draw train glow effect when pulsing
-        if (train.isPulsing()) {
-            g2.setColor(new Color(16, 185, 129, 50));
-            g2.fillOval(x - 4, y - 4, trainSize + 8, trainSize + 8);
+        // Draw train glow effect when pulsing OR if selected
+        if (train.isPulsing() || isSelectedTrain) {
+            // Larger glow for selected train
+            int glowSize = isSelectedTrain ? 12 : 8;
+            int glowAlpha = isSelectedTrain ? 80 : 50;
+            Color glowColor = isSelectedTrain ? new Color(59, 130, 246, glowAlpha) : new Color(16, 185, 129, glowAlpha);
+            g2.setColor(glowColor);
+            g2.fillOval(x - glowSize/2, y - glowSize/2, trainSize + glowSize, trainSize + glowSize);
         }
         
         // Draw train shadow with dynamic alpha
         g2.setColor(new Color(0, 0, 0, (int)(150 * train.getPulseAlpha())));
         g2.fillOval(x + 2, y + 2, trainSize, trainSize);
         
-        // Draw main train body
-        Color trainColor = new Color(16, 185, 129, (int)(255 * train.getPulseAlpha()));
+        // Draw main train body - different color for selected train
+        Color trainColor = isSelectedTrain ? 
+            new Color(59, 130, 246, (int)(255 * train.getPulseAlpha())) :  // Blue for selected
+            new Color(16, 185, 129, (int)(255 * train.getPulseAlpha()));   // Green for others
         g2.setColor(trainColor);
         g2.fillOval(x, y, trainSize, trainSize);
         
@@ -414,22 +425,46 @@ public class MapPanel extends JPanel {
         g2.setColor(new Color(255, 255, 255, (int)(200 * train.getPulseAlpha())));
         g2.fillOval(x + 3, y + 3, 5, 5);
         
-        // Draw train border
-        g2.setStroke(new BasicStroke(2f));
-        g2.setColor(new Color(6, 78, 59, (int)(255 * train.getPulseAlpha())));
+        // Draw train border - thicker for selected train
+        g2.setStroke(new BasicStroke(isSelectedTrain ? 3f : 2f));
+        Color borderColor = isSelectedTrain ? 
+            new Color(29, 78, 216, (int)(255 * train.getPulseAlpha())) :    // Dark blue for selected
+            new Color(6, 78, 59, (int)(255 * train.getPulseAlpha()));       // Dark green for others
+        g2.setColor(borderColor);
         g2.draw(new Ellipse2D.Float(x, y, trainSize, trainSize));
         
         // Draw direction indicator
         drawDirectionIndicator(g2, train, x + trainSize/2, y + trainSize/2, trainIndex);
         
-        // Draw train number
-        g2.setFont(new Font("Segoe UI", Font.BOLD, 10));
-        g2.setColor(new Color(241, 245, 249, (int)(255 * train.getPulseAlpha())));
-        String trainNum = String.valueOf(trainIndex + 1);
+        // Draw train number - larger and bolder for selected train
+        int fontSize = isSelectedTrain ? 11 : 10;
+        g2.setFont(new Font("Segoe UI", Font.BOLD, fontSize));
+        g2.setColor(new Color(255, 255, 255, (int)(255 * train.getPulseAlpha()))); // White text
+        // Use actual train ID instead of array index
+        String trainNumStr = actualTrainId;
         FontMetrics fm = g2.getFontMetrics();
-        int textX = x + (trainSize - fm.stringWidth(trainNum)) / 2;
+        int textX = x + (trainSize - fm.stringWidth(trainNumStr)) / 2;
         int textY = y + trainSize/2 + fm.getAscent()/2 - 1;
-        g2.drawString(trainNum, textX, textY);
+        g2.drawString(trainNumStr, textX, textY);
+        
+        // Add a label below the selected train
+        if (isSelectedTrain) {
+            g2.setFont(new Font("Segoe UI", Font.BOLD, 9));
+            g2.setColor(new Color(59, 130, 246, 200));
+            String label = "YOUR TRAIN";
+            int labelX = x + (trainSize - g2.getFontMetrics().stringWidth(label)) / 2;
+            int labelY = y + trainSize + 12;
+            
+            // Draw label background
+            int labelWidth = g2.getFontMetrics().stringWidth(label) + 8;
+            int labelHeight = 14;
+            g2.setColor(new Color(30, 41, 59, 200));
+            g2.fillRoundRect(labelX - 4, labelY - 10, labelWidth, labelHeight, 4, 4);
+            
+            // Draw label text
+            g2.setColor(new Color(147, 197, 253));
+            g2.drawString(label, labelX, labelY);
+        }
     }
     
     private void drawDirectionIndicator(Graphics2D g2, AnimatedTrain train, int centerX, int centerY, int trainIndex) {
@@ -641,6 +676,20 @@ public class MapPanel extends JPanel {
         ReadSimulatorOutput output = new ReadSimulatorOutput();
         output.readOutput();
         trainInfo = output.getTrains();
+        updateTrainPositions(trainInfo);
+    }
+    
+    /**
+     * Update train positions with pre-loaded train data (more efficient)
+     * 
+     * @param trains the list of trains with current positions
+     */
+    public void updateTrainPositions(ArrayList<Train> trains) {
+        if (trains == null || trains.isEmpty()) {
+            return;
+        }
+        
+        trainInfo = trains;
         
         // Animate trains: update targets and directions
         if (animatedTrains.size() != trainInfo.size()) {
