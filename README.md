@@ -157,11 +157,11 @@ The interactive mode will ask for:
 <div align="center">
 
 ### Main Display - Train Tracking View
-![Main Display](../miscellaneous/image_01.png)
+![Main Display](/miscellaneous/image_01.png)
 *Real-time train positions with smooth animations, live weather, and scrolling news*
 
 ### Advertisement Display
-![Advertisement View](../miscellaneous/image_02.png)  
+![Advertisement View](/miscellaneous/image_02.png)  
 *Dynamic advertisement rotation with professional transitions and modern UI*
 
 </div>
