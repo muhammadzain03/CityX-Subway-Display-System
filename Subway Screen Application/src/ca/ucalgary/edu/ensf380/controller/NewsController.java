@@ -20,6 +20,7 @@ package ca.ucalgary.edu.ensf380.controller;
 import ca.ucalgary.edu.ensf380.view.NewsPanel;
 import ca.ucalgary.edu.ensf380.util.AppLogger;
 
+import javax.swing.SwingUtilities;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -223,7 +224,10 @@ public class NewsController extends DataFetcherController {
      * @param news the news content to display
      */
     private void updateNews(String news) {
-        newsPanel.updateNewsLabel(news);
+        // Ensure UI updates happen on the Event Dispatch Thread
+        SwingUtilities.invokeLater(() -> {
+            newsPanel.updateNewsLabel(news);
+        });
     }
     
     /**

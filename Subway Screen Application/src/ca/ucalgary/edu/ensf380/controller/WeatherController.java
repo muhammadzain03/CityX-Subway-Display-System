@@ -4,6 +4,7 @@ import ca.ucalgary.edu.ensf380.view.WeatherPanel;
 import ca.ucalgary.edu.ensf380.util.AppConstants;
 import ca.ucalgary.edu.ensf380.util.AppLogger;
 
+import javax.swing.SwingUtilities;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -212,8 +213,11 @@ public class WeatherController extends DataFetcherController {
     private void updateWeather(String location, String condition, String temperature, String wind, String precipitation) {
         try {
             String weatherInfo = formatWeatherInfo(location, condition, temperature, wind, precipitation);
-            weatherPanel.updateWeatherLabel(weatherInfo);
-            AppLogger.debug("Weather display updated successfully");
+            // Ensure UI updates happen on the Event Dispatch Thread
+            SwingUtilities.invokeLater(() -> {
+                weatherPanel.updateWeatherLabel(weatherInfo);
+                AppLogger.debug("Weather display updated successfully");
+            });
         } catch (Exception e) {
             AppLogger.error("Error updating weather display", e);
         }
@@ -229,7 +233,10 @@ public class WeatherController extends DataFetcherController {
             "<html>Location: %s<br>Status: %s<br>Last Update: Never<br><br>%s<br><br><i>Note: Weather service may be<br>blocked by firewall or slow.<br>App continues running normally.</i></html>",
             city, "Service Unavailable", simplifiedError
         );
-        weatherPanel.updateWeatherLabel(errorInfo);
+        // Ensure UI updates happen on the Event Dispatch Thread
+        SwingUtilities.invokeLater(() -> {
+            weatherPanel.updateWeatherLabel(errorInfo);
+        });
     }
     
     /**
